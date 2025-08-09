@@ -300,7 +300,7 @@ export default function DashboardPage() {
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight">
+                <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
                   Build
                   <span className="gradient-text"> Dashboard</span>
                 </h1>
@@ -326,7 +326,7 @@ export default function DashboardPage() {
 
             {/* Stats Cards */}
             {builds.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <Card className="glass-card border-0">
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-3">
@@ -493,7 +493,7 @@ export default function DashboardPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       {/* Components */}
                       <div className="lg:col-span-2 space-y-4">
                         <h4 className="font-semibold text-lg flex items-center space-x-2">

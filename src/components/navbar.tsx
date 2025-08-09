@@ -99,33 +99,52 @@ export function Navbar() {
       </nav>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-          <div className="fixed top-20 left-0 right-0 glass-card border-t border-white/10 p-4">
-            <div className="space-y-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "block px-4 py-3 text-sm font-medium transition-colors rounded-lg",
-                    pathname === item.href
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/10"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 md:hidden transition-all duration-200 ease-in-out",
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        )}
+      >
+        {/* Backdrop */}
+        <div
+          className="fixed inset-0 bg-[var(--nord0)]/80"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+        
+        {/* Menu Panel */}
+        <div
+          className={cn(
+            "fixed top-20 left-0 right-0 transition-all duration-200 ease-out",
+            isMobileMenuOpen
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-2 opacity-0"
+          )}
+        >
+          <div className="bg-card border-b border-border">
+            <div className="container mx-auto px-4 py-4">
+              <div className="space-y-1">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "block px-4 py-3 text-base font-medium transition-colors duration-200 rounded-lg",
+                      pathname === item.href
+                        ? "text-primary bg-primary/10 border border-primary/20"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Spacer for fixed navbar */}
       <div className="h-20" />

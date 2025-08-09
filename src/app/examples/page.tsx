@@ -173,12 +173,12 @@ export default function ExamplesPage() {
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Header */}
           <div className="text-center space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-2 backdrop-blur-sm">
+            <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-2">
               <Star className="h-4 w-4 text-nord-13" />
               <span className="text-sm font-medium">Curated Example Builds</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
               Example
               <span className="gradient-text"> PC Builds</span>
             </h1>
@@ -221,7 +221,7 @@ export default function ExamplesPage() {
                 </CardHeader>
                 
                 <CardContent className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Components */}
                     <div className="space-y-4">
                       <h4 className="font-semibold text-lg flex items-center space-x-2">
@@ -343,7 +343,7 @@ export default function ExamplesPage() {
 
           {/* CTA Section */}
           <div className="text-center space-y-6 py-12">
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-2xl sm:text-3xl font-bold">
               Ready to Build Your
               <span className="gradient-text"> Perfect PC</span>?
             </h2>

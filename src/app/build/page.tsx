@@ -278,12 +278,12 @@ export default function BuildPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center space-y-6 mb-12">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-full px-6 py-2 backdrop-blur-sm">
+            <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-6 py-2">
               <Sparkles className="h-4 w-4 text-yellow-400" />
               <span className="text-sm font-medium">GeniusRig - AI-Powered Build Assistant</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
               Build Your
               <span className="gradient-text"> Perfect PC</span>
             </h1>
@@ -294,14 +294,14 @@ export default function BuildPage() {
 
           {/* Progress Steps */}
           <div className="flex justify-center mb-12">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
               <div className={`flex items-center space-x-2 ${step >= 1 ? 'text-primary' : 'text-muted-foreground'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                   step >= 1 ? 'bg-primary text-primary-foreground' : 'bg-muted'
                 }`}>
                   1
                 </div>
-                <span className="text-sm font-medium">Requirements</span>
+                <span className="text-sm font-medium hidden md:inline">Requirements</span>
               </div>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
               <div className={`flex items-center space-x-2 ${step >= 2 ? 'text-primary' : 'text-muted-foreground'}`}>
@@ -310,7 +310,7 @@ export default function BuildPage() {
                 }`}>
                   {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : '2'}
                 </div>
-                <span className="text-sm font-medium">AI Analysis</span>
+                <span className="text-sm font-medium hidden md:inline">AI Analysis</span>
               </div>
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
               <div className={`flex items-center space-x-2 ${step >= 3 ? 'text-primary' : 'text-muted-foreground'}`}>
@@ -319,7 +319,7 @@ export default function BuildPage() {
                 }`}>
                   3
                 </div>
-                <span className="text-sm font-medium">Your Build</span>
+                <span className="text-sm font-medium hidden md:inline">Your Build</span>
               </div>
             </div>
           </div>

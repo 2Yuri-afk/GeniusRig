@@ -98,17 +98,17 @@ export default function HomePage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-8 max-w-5xl mx-auto">
             <div className="space-y-6">
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-bold tracking-tight leading-tight">
                 <span className="block mb-2">Build Your</span>
                 <span className="block mb-4">
                   <span className="gradient-text">Dream PC</span>
                 </span>
-                <span className="block text-4xl md:text-5xl lg:text-6xl font-body font-light text-muted-foreground">
+                <span className="block text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-body font-light text-muted-foreground">
                   with AI Precision
                 </span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
                 Get personalized PC build recommendations powered by cutting-edge AI. 
                 Tell us your budget and use case, and we&apos;ll craft the perfect components for you.
               </p>
@@ -147,8 +147,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce">
+        {/* Scroll Indicator - Hidden on mobile */}
+        <div className="hidden md:block absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse" />
           </div>
@@ -158,7 +158,7 @@ export default function HomePage() {
       {/* Stats Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center space-y-2">
                 <div className="text-3xl md:text-4xl font-bold gradient-text">{stat.number}</div>
@@ -182,7 +182,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => (
               <Card 
                 key={index} 

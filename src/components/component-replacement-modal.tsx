@@ -4,10 +4,16 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { formatCurrency } from "@/lib/currency"
 import { PCPart } from "@/types/build"
 import { 
-  X, 
   Check, 
   TrendingUp, 
   TrendingDown, 
@@ -69,41 +75,23 @@ export function ComponentReplacementModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
-      {/* Modal */}
-      <div className="relative w-full max-w-4xl mx-4 max-h-[90vh] overflow-hidden">
-        <Card className="glass-card border-0 shadow-2xl">
-          <CardHeader className="pb-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <IconComponent className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl">Replace {currentComponent.type}</CardTitle>
-                  <CardDescription className="text-base">
-                    Choose an alternative component within your budget
-                  </CardDescription>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+        <DialogHeader>
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+              <IconComponent className="h-6 w-6 text-primary" />
             </div>
-          </CardHeader>
+            <div>
+              <DialogTitle className="text-2xl">Replace {currentComponent.type}</DialogTitle>
+              <DialogDescription className="text-base">
+                Choose an alternative component within your budget
+              </DialogDescription>
+            </div>
+          </div>
+        </DialogHeader>
 
-          <CardContent className="space-y-6">
+        <div className="space-y-6 overflow-y-auto max-h-[60vh]">
             {/* Current Component */}
             <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
               <h4 className="font-semibold mb-3 flex items-center space-x-2">
@@ -130,7 +118,7 @@ export function ComponentReplacementModal({
             </div>
 
             {/* Alternative Components */}
-            <div className="space-y-3 max-h-96 overflow-y-auto">
+            <div className="space-y-3 max-h-80 overflow-y-auto">
               <h4 className="font-semibold">Alternative Options</h4>
               {alternatives.map((alternative, index) => {
                 const priceDifference = getPriceDifference(alternative.price_estimate)
@@ -185,9 +173,8 @@ export function ComponentReplacementModal({
                 )
               })}
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }

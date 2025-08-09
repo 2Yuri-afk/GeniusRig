@@ -5,7 +5,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight">
             About <span className="gradient-text">GeniusRig</span>
           </h1>
           <p className="text-xl text-muted-foreground">
@@ -37,7 +37,7 @@ export default function AboutPage() {
             <CardTitle>How It Works</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center space-y-2">
                 <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto font-bold text-lg">
                   1
