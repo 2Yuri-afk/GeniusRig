@@ -5,6 +5,7 @@ A modern SaaS application that provides AI-powered PC build recommendations base
 ## Features
 
 - 🤖 AI-powered component recommendations using Google Gemini
+- 💬 Intelligent chatbot assistant (RigBot) for instant PC building help
 - 💰 Budget-optimized builds
 - 🎯 Use case specific recommendations (gaming, productivity, video editing, etc.)
 - 📱 Responsive design with Tailwind CSS

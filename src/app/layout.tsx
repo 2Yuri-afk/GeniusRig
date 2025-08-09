@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
+import { Chatbot } from '@/components/chatbot'
 import { Footer } from "@/components/footer"
 import { PageTransition } from '@/components/page-transition'
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           </PageTransition>
         </main>
         <Footer />
+        <Chatbot />
       </body>
     </html>
   )
