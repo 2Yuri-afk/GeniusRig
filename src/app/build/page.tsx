@@ -12,6 +12,7 @@ import { CurrencySelector, useCurrency } from "@/components/currency-selector"
 import { ComponentReplacementModal } from "@/components/component-replacement-modal"
 import { convertCurrency, formatCurrency } from "@/lib/currency"
 import { PCBuild, PCPart } from "@/types/build"
+import { useToast } from "@/hooks/use-toast"
 import { 
   Cpu, 
   HardDrive, 
@@ -64,6 +65,7 @@ export default function BuildPage() {
   const [error, setError] = useState("")
   const [step, setStep] = useState(1)
   const { currency, setCurrency } = useCurrency()
+  const { toast } = useToast()
   
   // Replacement modal state
   const [isReplacementModalOpen, setIsReplacementModalOpen] = useState(false)
@@ -126,6 +128,12 @@ export default function BuildPage() {
       const existingBuilds = JSON.parse(localStorage.getItem("pcBuilds") || "[]")
       existingBuilds.push(newBuild)
       localStorage.setItem("pcBuilds", JSON.stringify(existingBuilds))
+      
+      // Show success toast
+      toast({
+        title: "Build generated successfully!",
+        description: `Your ${formatCurrency(newBuild.budget, newBuild.currency)} ${newBuild.useCase} build is ready.`,
+      })
     } catch (err) {
       setError("Failed to generate build. Please try again.")
       setStep(1)
@@ -239,10 +247,36 @@ export default function BuildPage() {
     // Recalculate total
     const newTotal = updatedParts.reduce((sum, part) => sum + part.price_estimate, 0)
 
+    // Update reasoning to reflect component changes
+    let updatedReasoning = build.reasoning
+    
+    // Remove any existing modification notes
+    if (updatedReasoning.includes('\n\nCustomizations: ')) {
+      updatedReasoning = updatedReasoning.split('\n\nCustomizations: ')[0]
+    }
+    
+    // Add current modifications summary - always add the new modification
+    const allModifications = existingModIndex !== -1 ? 
+      [...modifications.slice(0, existingModIndex), newModification, ...modifications.slice(existingModIndex + 1)] :
+      [...modifications, newModification]
+    
+    if (allModifications.length > 0) {
+      
+      const modificationSummary = allModifications.map(mod => {
+        const priceDiff = mod.newComponent.price_estimate - mod.originalComponent.price_estimate
+        const priceChange = priceDiff > 0 ? `+$${priceDiff}` : 
+                           priceDiff < 0 ? `-$${Math.abs(priceDiff)}` : 'same price'
+        return `${mod.originalComponent.type}: ${mod.originalComponent.name} → ${mod.newComponent.name} (${priceChange})`
+      }).join(', ')
+      
+      updatedReasoning += `\n\nCustomizations: ${modificationSummary}`
+    }
+
     const updatedBuild: PCBuild = {
       ...build,
       parts: updatedParts,
-      total_estimate: newTotal
+      total_estimate: newTotal,
+      reasoning: updatedReasoning
     }
 
     setBuild(updatedBuild)
@@ -254,6 +288,12 @@ export default function BuildPage() {
       existingBuilds[buildIndex] = updatedBuild
       localStorage.setItem("pcBuilds", JSON.stringify(existingBuilds))
     }
+
+    // Show success toast
+    toast({
+      title: "Component replaced!",
+      description: `${oldComponent.type} updated: ${oldComponent.name} → ${newComponent.name}`,
+    })
 
     // Close modal
     setIsReplacementModalOpen(false)
@@ -555,7 +595,12 @@ export default function BuildPage() {
                   <CardContent className="space-y-6">
                     {/* Main reasoning */}
                     <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
-                      <p className="text-foreground leading-relaxed text-base">{build.reasoning}</p>
+                      <p className="text-foreground leading-relaxed text-base">
+                        {build.reasoning.includes('\n\nCustomizations: ') ? 
+                          build.reasoning.split('\n\nCustomizations: ')[0] : 
+                          build.reasoning
+                        }
+                      </p>
                     </div>
 
                     {/* Modifications Section */}
@@ -704,6 +749,7 @@ export default function BuildPage() {
           currency={currency}
           onReplace={handleReplaceComponent}
           remainingBudget={getRemainingBudget()}
+          allComponents={build.parts}
         />
       )}
     </div>

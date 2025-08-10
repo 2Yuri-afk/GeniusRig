@@ -5,6 +5,7 @@ import { Navbar } from '@/components/navbar'
 import { Chatbot } from '@/components/chatbot'
 import { Footer } from "@/components/footer"
 import { PageTransition } from '@/components/page-transition'
+import { Toaster } from '@/components/ui/toaster'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <Chatbot />
+        <Toaster />
       </body>
     </html>
   )

@@ -42,6 +42,7 @@ const botPersonality = {
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState("")
@@ -76,6 +77,21 @@ export function Chatbot() {
       inputRef.current.focus()
     }
   }, [isOpen, isMinimized])
+
+  // Handle opening animation
+  const handleOpen = () => {
+    setIsOpen(true)
+    setTimeout(() => setIsVisible(true), 10) // Small delay for smooth animation
+  }
+
+  // Handle closing animation
+  const handleClose = () => {
+    setIsVisible(false)
+    setTimeout(() => {
+      setIsOpen(false)
+      setIsMinimized(false) // Reset minimized state when closing
+    }, 300) // Wait for animation to complete
+  }
 
   const sendMessage = async (content: string) => {
     if (!content.trim()) return
@@ -143,7 +159,7 @@ export function Chatbot() {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <Button
-          onClick={() => setIsOpen(true)}
+          onClick={handleOpen}
           className="w-14 h-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 group"
           size="sm"
         >
@@ -160,8 +176,12 @@ export function Chatbot() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <Card className={`glass-card border-0 shadow-2xl transition-all duration-300 ${
+      <Card className={`glass-card border-0 shadow-2xl transition-all duration-300 transform ${
         isMinimized ? 'w-80 h-16' : 'w-96 h-[500px]'
+      } ${
+        isVisible 
+          ? 'opacity-100 translate-y-0 scale-100' 
+          : 'opacity-0 translate-y-4 scale-95'
       }`}>
         {/* Header */}
         <CardHeader className="pb-3 border-b border-border/50">
@@ -187,7 +207,7 @@ export function Chatbot() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="h-6 w-6 p-0"
               >
                 <X className="h-3 w-3" />

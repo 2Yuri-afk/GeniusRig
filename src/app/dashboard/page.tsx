@@ -5,8 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogFooter 
+} from "@/components/ui/dialog"
 import { formatCurrency } from "@/lib/currency"
 import { PCBuild } from "@/types/build"
+import { useToast } from "@/hooks/use-toast"
 import { 
   Cpu, 
   HardDrive, 
@@ -24,7 +33,8 @@ import {
   Clock,
   Filter,
   Search,
-  Download
+  Download,
+  RefreshCw
 } from "lucide-react"
 
 const componentIcons = {
@@ -73,6 +83,12 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [sortBy, setSortBy] = useState<"date" | "budget" | "useCase">("date")
+  const { toast } = useToast()
+  
+  // Confirmation modal states
+  const [showClearAllModal, setShowClearAllModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [buildToDelete, setBuildToDelete] = useState<string | null>(null)
 
   useEffect(() => {
     // Load builds from localStorage
@@ -91,15 +107,38 @@ export default function DashboardPage() {
     }
   }, [])
 
-  const clearHistory = () => {
-    localStorage.removeItem("pcBuilds")
-    setBuilds([])
+  const handleClearAllClick = () => {
+    setShowClearAllModal(true)
   }
 
-  const deleteBuild = (buildId: string) => {
-    const updatedBuilds = builds.filter(build => build.id !== buildId)
-    setBuilds(updatedBuilds)
-    localStorage.setItem("pcBuilds", JSON.stringify(updatedBuilds))
+  const confirmClearAll = () => {
+    localStorage.removeItem("pcBuilds")
+    setBuilds([])
+    setShowClearAllModal(false)
+    toast({
+      title: "All builds cleared",
+      description: "All your PC builds have been permanently deleted.",
+    })
+  }
+
+  const handleDeleteClick = (buildId: string) => {
+    setBuildToDelete(buildId)
+    setShowDeleteModal(true)
+  }
+
+  const confirmDelete = () => {
+    if (buildToDelete) {
+      const buildToDeleteObj = builds.find(build => build.id === buildToDelete)
+      const updatedBuilds = builds.filter(build => build.id !== buildToDelete)
+      setBuilds(updatedBuilds)
+      localStorage.setItem("pcBuilds", JSON.stringify(updatedBuilds))
+      setBuildToDelete(null)
+      setShowDeleteModal(false)
+      toast({
+        title: "Build deleted",
+        description: `${buildToDeleteObj ? formatCurrency(buildToDeleteObj.budget, buildToDeleteObj.currency) + ' ' + buildToDeleteObj.useCase : 'PC'} build has been deleted.`,
+      })
+    }
   }
 
   const downloadBuildPDF = async (build: PCBuild) => {
@@ -316,7 +355,7 @@ export default function DashboardPage() {
                   </a>
                 </Button>
                 {builds.length > 0 && (
-                  <Button variant="outline" onClick={clearHistory}>
+                  <Button variant="outline" onClick={handleClearAllClick}>
                     <Trash2 className="h-4 w-4 mr-2" />
                     Clear All
                   </Button>
@@ -484,7 +523,7 @@ export default function DashboardPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => deleteBuild(build.id)}
+                          onClick={() => handleDeleteClick(build.id)}
                           className="text-nord-11 hover:text-nord-11/80 hover:bg-nord-11/10"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -532,10 +571,54 @@ export default function DashboardPage() {
                           </h4>
                           <div className="p-3 bg-muted/20 rounded-lg">
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                              {build.reasoning}
+                              {build.reasoning.includes('\n\nCustomizations: ') ? 
+                                build.reasoning.split('\n\nCustomizations: ')[0] : 
+                                build.reasoning
+                              }
                             </p>
                           </div>
                         </div>
+
+                        {/* Your Customizations Section */}
+                        {build.reasoning.includes('\n\nCustomizations: ') && (
+                          <div className="p-4 bg-nord-13/10 rounded-lg border border-nord-13/20">
+                            <div className="flex items-center space-x-2 mb-3">
+                              <RefreshCw className="h-5 w-5 text-nord-13" />
+                              <h4 className="font-semibold text-nord-13">Your Customizations</h4>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-3">
+                              You&apos;ve customized this build from the original AI recommendations:
+                            </p>
+                            <div className="space-y-2">
+                              {build.reasoning.split('\n\nCustomizations: ')[1].split(', ').map((change, index) => {
+                                const [componentAndChange, priceChange] = change.split(' (');
+                                const [componentType, componentChange] = componentAndChange.split(': ');
+                                const [oldComponent, newComponent] = componentChange.split(' → ');
+                                const price = priceChange ? priceChange.replace(')', '') : '';
+                                
+                                return (
+                                  <div key={index} className="flex items-center justify-between p-2 bg-muted/20 rounded-lg">
+                                    <div className="flex items-center space-x-2">
+                                      <Badge variant="outline" className="text-xs">{componentType}</Badge>
+                                      <span className="text-sm">
+                                        <span className="line-through text-muted-foreground">{oldComponent}</span>
+                                        <span className="mx-2">→</span>
+                                        <span className="font-medium">{newComponent}</span>
+                                      </span>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                      {price && (
+                                        <span className={price.startsWith('+') ? 'text-red-600' : price.startsWith('-') ? 'text-green-600' : ''}>
+                                          {price}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </CardContent>
@@ -553,6 +636,48 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Clear All Confirmation Modal */}
+      <Dialog open={showClearAllModal} onOpenChange={setShowClearAllModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Clear All Builds?</DialogTitle>
+            <DialogDescription>
+              This action will permanently delete all your saved PC builds. This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowClearAllModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmClearAll}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Clear All
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Build Confirmation Modal */}
+      <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Build?</DialogTitle>
+            <DialogDescription>
+              This action will permanently delete this PC build. This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

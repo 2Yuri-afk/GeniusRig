@@ -121,6 +121,13 @@
   .fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
   }
+  
+  .pixel-art {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
 }
 
 @keyframes floating {

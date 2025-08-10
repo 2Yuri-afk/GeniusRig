@@ -25,6 +25,18 @@ Budget: $${budget}
 Use Case: ${useCase}
 ${preferredBrands ? `Preferred Brands: ${preferredBrands}` : ""}
 
+COMPATIBILITY REQUIREMENTS - CRITICAL FOR SAFE BUILDING:
+1. CPU & Motherboard: Ensure CPU socket matches motherboard socket (e.g., AM5 CPU with AM5 motherboard, LGA1700 CPU with LGA1700 motherboard)
+2. RAM & Motherboard: Match RAM type with motherboard support (DDR4 or DDR5)
+3. PSU Wattage: Calculate total system power draw and add 20% headroom. Minimum PSU requirements:
+   - RTX 4060/RX 7600 class: 550W minimum
+   - RTX 4070/RX 7700 XT class: 650W minimum  
+   - RTX 4080/RX 7800 XT class: 750W minimum
+   - RTX 4090/RX 7900 XTX class: 850W minimum
+4. Case Size: Ensure case can fit motherboard form factor (ATX, mATX, ITX) and GPU length
+5. Storage: Verify motherboard has required M.2 slots for NVMe SSDs
+6. All components must be from reputable manufacturers with good reliability records
+
 IMPORTANT: Consider the latest components available as of early 2025, including:
 
 GPUs:
@@ -64,7 +76,12 @@ Return result as JSON with this exact structure:
   "reasoning": "Brief explanation of why these components were chosen and how they work together for the specified use case and budget."
 }
 
-Ensure all components are compatible and the total stays within or close to the budget. Use current market prices and popular, reliable components. Return only the JSON, no additional text.`;
+CRITICAL REQUIREMENTS:
+1. COMPATIBILITY: Double-check ALL component compatibility before finalizing. CPU socket MUST match motherboard. PSU wattage MUST be adequate for the entire system with 20% headroom.
+2. BUDGET: The total_estimate MUST NOT exceed the budget of $${budget}. If you cannot fit all components within budget, prioritize the most important components for the use case and reduce specs on others. The total should ideally be 90-100% of the budget but NEVER exceed it.
+3. SAFETY: Only recommend components that will work together safely and reliably.
+
+Use current market prices and popular, reliable components. Return only the JSON, no additional text.`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`,
@@ -149,6 +166,25 @@ Ensure all components are compatible and the total stays within or close to the 
       !buildData.reasoning
     ) {
       throw new Error("Invalid response structure from AI");
+    }
+
+    // Check if the AI went over budget and adjust if necessary
+    if (buildData.total_estimate > budget) {
+      console.warn(`AI exceeded budget: ${buildData.total_estimate} > ${budget}`);
+      
+      // Calculate the overage and proportionally reduce all component prices
+      const overage = buildData.total_estimate - budget;
+      const reductionFactor = budget / buildData.total_estimate;
+      
+      buildData.parts = buildData.parts.map((part: any) => ({
+        ...part,
+        price_estimate: Math.round(part.price_estimate * reductionFactor)
+      }));
+      
+      buildData.total_estimate = buildData.parts.reduce((sum: number, part: any) => sum + part.price_estimate, 0);
+      
+      // Update reasoning to reflect the adjustment
+      buildData.reasoning += ` Note: Component prices were adjusted to stay within your $${budget} budget.`;
     }
 
     return NextResponse.json(buildData);
