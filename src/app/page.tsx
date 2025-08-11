@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { 
+  TypingAnimation, 
+  GlitchText, 
+  FloatingParticles, 
+  CircuitLines,
+  HoloBorder 
+} from "@/components/animations/tech-animations";
 import {
   Card,
   CardContent,
@@ -101,123 +109,60 @@ export default function HomePage() {
     <div className="relative overflow-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center -mt-16">
-        {/* Animated Pixelated PC Graphics - Hidden on mobile */}
-        <div className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Left Side - 8-bit Desktop PC */}
-          <div className="absolute left-20 top-1/2 transform -translate-y-1/2 floating-animation opacity-20">
-            <div
-              className="pixel-pc-desktop scale-75 xl:scale-100"
-              style={{ imageRendering: "pixelated" }}
-            >
-              {/* 8-bit Monitor */}
-              <div className="relative">
-                <div className="w-32 h-20 bg-gray-800 mb-2 pixel-art">
-                  <div className="w-full h-full bg-blue-500 p-1">
-                    <div className="w-full h-1 bg-white mb-1"></div>
-                    <div className="w-24 h-1 bg-white mb-1"></div>
-                    <div className="w-16 h-1 bg-white mb-1"></div>
-                    <div className="w-20 h-1 bg-white mb-1"></div>
-                    <div className="w-12 h-1 bg-white"></div>
-                  </div>
-                </div>
-                {/* Monitor Stand - pixelated */}
-                <div className="w-8 h-4 bg-gray-600 mx-auto"></div>
-                <div className="w-16 h-2 bg-gray-700 mx-auto"></div>
-              </div>
-
-              {/* 8-bit PC Case */}
-              <div className="w-16 h-24 bg-gray-900 mt-4 relative pixel-art">
-                <div className="w-2 h-2 bg-green-400 absolute top-2 left-2 animate-pulse"></div>
-                <div className="w-2 h-2 bg-blue-400 absolute top-2 left-6"></div>
-                <div className="w-12 h-8 bg-gray-800 absolute bottom-2 left-2">
-                  <div className="w-full h-1 bg-gray-600 mb-1"></div>
-                  <div className="w-full h-1 bg-gray-600 mb-1"></div>
-                  <div className="w-full h-1 bg-gray-600"></div>
-                </div>
-                {/* Pixelated vents */}
-                <div className="absolute top-6 left-1 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-6 left-3 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-6 left-5 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-8 left-1 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-8 left-3 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-8 left-5 w-1 h-1 bg-gray-600"></div>
-              </div>
+        {/* Tech Atmosphere Effects */}
+        <FloatingParticles count={20} className="opacity-60" />
+        <CircuitLines />
+        
+        {/* Real PC Images - Hidden on mobile */}
+        <div className="hidden lg:block absolute inset-0 overflow-hidden">
+          {/* Left Side - PC Image 1 */}
+          <div className="absolute left-20 top-1/2 transform -translate-y-1/2 floating-animation opacity-30 group cursor-pointer">
+            <div className="relative transition-all duration-500 hover:scale-105">
+              <Image
+                src="/pc-image-1.png"
+                alt="Gaming PC Build"
+                width={200}
+                height={300}
+                className="object-contain drop-shadow-2xl transition-all duration-500 group-hover:drop-shadow-[0_0_30px_rgba(191,97,106,0.6)]"
+                priority
+              />
+              {/* Nord Aurora RGB Glow - Gaming PC (Hover Only) */}
+              <div className="absolute inset-0 rounded-lg blur-xl -z-10 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                   style={{
+                     background: `
+                       radial-gradient(circle at 30% 20%, rgba(191, 97, 106, 0.8) 0%, transparent 60%),
+                       radial-gradient(circle at 70% 80%, rgba(208, 135, 112, 0.8) 0%, transparent 60%),
+                       radial-gradient(circle at 50% 50%, rgba(235, 203, 139, 0.6) 0%, transparent 60%)
+                     `,
+                     animation: "aurora-glow 2s ease-in-out infinite"
+                   }} />
             </div>
           </div>
 
-          {/* Right Side - 8-bit Gaming Setup */}
+          {/* Right Side - PC Image 2 */}
           <div
-            className="absolute right-20 top-1/2 transform -translate-y-1/2 floating-animation opacity-20"
+            className="absolute right-20 top-1/2 transform -translate-y-1/2 floating-animation opacity-30 group cursor-pointer"
             style={{ animationDelay: "1s" }}
           >
-            <div
-              className="pixel-pc-gaming scale-75 xl:scale-100"
-              style={{ imageRendering: "pixelated" }}
-            >
-              {/* 8-bit Gaming Monitor */}
-              <div className="relative">
-                <div className="w-36 h-24 bg-gray-900 mb-2 pixel-art">
-                  <div className="w-full h-full bg-red-500 p-1">
-                    <div className="w-full h-1 bg-yellow-300 mb-1"></div>
-                    <div className="w-28 h-1 bg-yellow-300 mb-1"></div>
-                    <div className="w-20 h-1 bg-yellow-300 mb-1"></div>
-                    <div className="w-24 h-1 bg-yellow-300 mb-1"></div>
-                    <div className="w-16 h-1 bg-yellow-300 mb-1"></div>
-                    {/* Game-like pixels */}
-                    <div className="flex gap-1 mt-2">
-                      <div className="w-2 h-2 bg-green-400"></div>
-                      <div className="w-2 h-2 bg-blue-400"></div>
-                      <div className="w-2 h-2 bg-red-400"></div>
-                      <div className="w-2 h-2 bg-yellow-400"></div>
-                    </div>
-                  </div>
-                </div>
-                {/* RGB Monitor Stand - pixelated */}
-                <div className="w-10 h-6 bg-red-500 mx-auto animate-pulse"></div>
-                <div className="w-20 h-3 bg-gray-800 mx-auto"></div>
-              </div>
-
-              {/* 8-bit RGB PC Case */}
-              <div className="w-20 h-28 bg-gray-900 mt-4 relative pixel-art overflow-hidden">
-                {/* RGB strip effect */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-red-500 animate-pulse"></div>
-                <div
-                  className="absolute top-1 left-0 w-full h-1 bg-green-500 animate-pulse"
-                  style={{ animationDelay: "0.3s" }}
-                ></div>
-                <div
-                  className="absolute top-2 left-0 w-full h-1 bg-blue-500 animate-pulse"
-                  style={{ animationDelay: "0.6s" }}
-                ></div>
-
-                <div className="w-2 h-2 bg-red-400 absolute top-4 left-2 animate-pulse"></div>
-                <div
-                  className="w-2 h-2 bg-green-400 absolute top-4 left-6 animate-pulse"
-                  style={{ animationDelay: "0.3s" }}
-                ></div>
-                <div
-                  className="w-2 h-2 bg-blue-400 absolute top-4 left-10 animate-pulse"
-                  style={{ animationDelay: "0.6s" }}
-                ></div>
-
-                <div className="w-16 h-10 bg-gray-800 absolute bottom-3 left-2">
-                  <div className="w-full h-1 bg-purple-400 animate-pulse"></div>
-                  <div
-                    className="w-full h-1 bg-pink-400 animate-pulse"
-                    style={{ animationDelay: "0.2s" }}
-                  ></div>
-                  <div
-                    className="w-full h-1 bg-cyan-400 animate-pulse"
-                    style={{ animationDelay: "0.4s" }}
-                  ></div>
-                </div>
-
-                {/* Pixelated side vents */}
-                <div className="absolute top-8 right-1 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-10 right-1 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-12 right-1 w-1 h-1 bg-gray-600"></div>
-                <div className="absolute top-14 right-1 w-1 h-1 bg-gray-600"></div>
-              </div>
+            <div className="relative transition-all duration-500 hover:scale-105">
+              <Image
+                src="/pc-image-2.png"
+                alt="Workstation PC Build"
+                width={200}
+                height={300}
+                className="object-contain drop-shadow-2xl transition-all duration-500 group-hover:drop-shadow-[0_0_30px_rgba(163,190,140,0.6)]"
+                priority
+              />
+              {/* Nord Aurora RGB Glow - Workstation PC (Hover Only) */}
+              <div className="absolute inset-0 rounded-lg blur-xl -z-10 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                   style={{
+                     background: `
+                       radial-gradient(circle at 40% 30%, rgba(163, 190, 140, 0.8) 0%, transparent 60%),
+                       radial-gradient(circle at 60% 70%, rgba(180, 142, 173, 0.8) 0%, transparent 60%),
+                       radial-gradient(circle at 20% 80%, rgba(143, 188, 187, 0.6) 0%, transparent 60%)
+                     `,
+                     animation: "aurora-glow 2s ease-in-out infinite"
+                   }} />
             </div>
           </div>
 
@@ -280,13 +225,17 @@ export default function HomePage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-8 max-w-5xl mx-auto">
             <div className="space-y-6">
-              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-bold tracking-tight leading-tight">
-                <span className="block mb-2">Build Your</span>
+              <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[8rem] xl:text-[10rem] font-heading font-bold tracking-tight leading-tight">
+                <span className="block mb-2">
+                  <TypingAnimation text="Build Your" speed={80} showCursor={false} />
+                </span>
                 <span className="block mb-4">
-                  <span className="gradient-text">Dream PC</span>
+                  <GlitchText intensity="medium" triggerOnHover={true} className="gradient-text">
+                    Dream PC
+                  </GlitchText>
                 </span>
                 <span className="block text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-body font-light text-muted-foreground">
-                  with AI Precision
+                  <TypingAnimation text="with AI Precision" speed={60} showCursor={false} />
                 </span>
               </h1>
 
@@ -375,13 +324,15 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <Card
+              <HoloBorder
                 key={index}
-                className={`glass-card border-0 hover:scale-105 transition-all duration-300 group cursor-pointer ${
+                intensity={currentFeature === index ? "high" : "medium"}
+                className={`hover:scale-105 transition-all duration-300 group cursor-pointer ${
                   currentFeature === index ? "pulse-glow" : ""
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
+                <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="space-y-4">
                   <div
                     className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} p-3 group-hover:scale-110 transition-transform duration-300`}
@@ -397,7 +348,8 @@ export default function HomePage() {
                     {feature.description}
                   </CardDescription>
                 </CardContent>
-              </Card>
+                </Card>
+              </HoloBorder>
             ))}
           </div>
         </div>

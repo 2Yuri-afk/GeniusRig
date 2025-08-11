@@ -172,6 +172,25 @@
   50% { background-position: 100% 50%; }
 }
 
+@keyframes aurora-glow {
+  0%, 100% { 
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  25% { 
+    opacity: 0.5;
+    transform: scale(1.05) rotate(1deg);
+  }
+  50% { 
+    opacity: 0.4;
+    transform: scale(1.02) rotate(-1deg);
+  }
+  75% { 
+    opacity: 0.6;
+    transform: scale(1.03) rotate(0.5deg);
+  }
+}
+
 .nord-accent {
   background: var(--nord7);
   color: var(--nord0);
