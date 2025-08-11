@@ -180,20 +180,10 @@
 /* Font utility classes */
 .font-display {
   font-family: 'Jersey 10', cursive;
-  /* Browser-specific letter spacing fixes for Jersey font */
-  letter-spacing: 0.05em;
-  -webkit-font-feature-settings: "kern" 1;
-  font-feature-settings: "kern" 1;
-  text-rendering: optimizeLegibility;
 }
 
 .font-heading {
   font-family: 'Jersey 10', cursive;
-  /* Browser-specific letter spacing fixes for Jersey font */
-  letter-spacing: 0.05em;
-  -webkit-font-feature-settings: "kern" 1;
-  font-feature-settings: "kern" 1;
-  text-rendering: optimizeLegibility;
 }
 
 .font-mono {
@@ -218,11 +208,6 @@
 .brand-text {
   font-family: 'Jersey 10', cursive;
   font-weight: 400;
-  /* Browser-specific letter spacing fixes for Jersey font */
-  letter-spacing: 0.05em;
-  -webkit-font-feature-settings: "kern" 1;
-  font-feature-settings: "kern" 1;
-  text-rendering: optimizeLegibility;
 }
 
 /* Custom scrollbar */
@@ -242,32 +227,11 @@
   @apply bg-primary/80;
 }
 
-/* Browser-specific fixes for Jersey 10 font rendering */
-/* Chrome, Safari, Edge (Webkit/Blink) */
-@supports (-webkit-appearance: none) {
+/* Chrome-only fix for Jersey 10 font letter spacing */
+@supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
   .font-heading,
   .font-display,
   .brand-text {
-    letter-spacing: 0.08em !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
-
-/* Firefox specific fixes */
-@-moz-document url-prefix() {
-  .font-heading,
-  .font-display,
-  .brand-text {
-    letter-spacing: normal !important;
-  }
-}
-
-/* Additional Chrome-specific targeting */
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  .font-heading,
-  .font-display,
-  .brand-text {
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.05em;
   }
 }

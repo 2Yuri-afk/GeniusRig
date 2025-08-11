@@ -101,12 +101,12 @@ export default function HomePage() {
     <div className="relative overflow-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center -mt-16">
-        {/* Animated Pixelated PC Graphics */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated Pixelated PC Graphics - Hidden on mobile */}
+        <div className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none">
           {/* Left Side - 8-bit Desktop PC */}
           <div className="absolute left-20 top-1/2 transform -translate-y-1/2 floating-animation opacity-20">
             <div
-              className="pixel-pc-desktop scale-75 lg:scale-100"
+              className="pixel-pc-desktop scale-75 xl:scale-100"
               style={{ imageRendering: "pixelated" }}
             >
               {/* 8-bit Monitor */}
@@ -151,7 +151,7 @@ export default function HomePage() {
             style={{ animationDelay: "1s" }}
           >
             <div
-              className="pixel-pc-gaming scale-75 lg:scale-100"
+              className="pixel-pc-gaming scale-75 xl:scale-100"
               style={{ imageRendering: "pixelated" }}
             >
               {/* 8-bit Gaming Monitor */}
@@ -227,6 +227,54 @@ export default function HomePage() {
             className="absolute top-3/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl floating-animation"
             style={{ animationDelay: "2s" }}
           />
+        </div>
+
+        {/* Mobile-friendly animated tech icons */}
+        <div className="lg:hidden absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Top left - CPU icon */}
+          <div className="absolute top-1/4 left-8 floating-tech-icon opacity-30">
+            <Cpu className="h-8 w-8 text-primary" />
+          </div>
+          
+          {/* Top right - Monitor icon */}
+          <div 
+            className="absolute top-1/3 right-8 floating-tech-icon opacity-30"
+            style={{ animationDelay: "1s" }}
+          >
+            <Monitor className="h-8 w-8 text-accent" />
+          </div>
+          
+          {/* Bottom left - Memory icon */}
+          <div 
+            className="absolute bottom-1/3 left-12 floating-tech-icon opacity-30"
+            style={{ animationDelay: "2s" }}
+          >
+            <MemoryStick className="h-6 w-6 text-nord-14" />
+          </div>
+          
+          {/* Bottom right - HDD icon */}
+          <div 
+            className="absolute bottom-1/4 right-12 floating-tech-icon opacity-30"
+            style={{ animationDelay: "3s" }}
+          >
+            <HardDrive className="h-6 w-6 text-nord-12" />
+          </div>
+          
+          {/* Center left - Gamepad icon */}
+          <div 
+            className="absolute top-1/2 left-4 floating-tech-icon opacity-25"
+            style={{ animationDelay: "0.5s" }}
+          >
+            <Gamepad2 className="h-7 w-7 text-nord-11" />
+          </div>
+          
+          {/* Center right - Video icon */}
+          <div 
+            className="absolute top-1/2 right-4 floating-tech-icon opacity-25"
+            style={{ animationDelay: "1.5s" }}
+          >
+            <Video className="h-7 w-7 text-nord-15" />
+          </div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
