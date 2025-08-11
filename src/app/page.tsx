@@ -330,8 +330,8 @@ export default function HomePage() {
                 className={`hover:scale-105 transition-all duration-300 group cursor-pointer ${
                   currentFeature === index ? "pulse-glow" : ""
                 }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
               >
+                <div style={{ animationDelay: `${index * 0.1}s` }}>
                 <Card className="bg-transparent border-0 shadow-none">
                 <CardHeader className="space-y-4">
                   <div
@@ -349,6 +349,7 @@ export default function HomePage() {
                   </CardDescription>
                 </CardContent>
                 </Card>
+                </div>
               </HoloBorder>
             ))}
           </div>
