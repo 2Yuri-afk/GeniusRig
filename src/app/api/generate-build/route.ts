@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { GoogleGenAI } from "@google/genai";
 
 export async function POST(request: NextRequest) {
   try {
@@ -66,58 +67,40 @@ CRITICAL REQUIREMENTS:
 Use current market prices and popular, reliable components. Return only the JSON, no additional text.`;
 
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            temperature: 0.7,
-            topK: 1,
-            topP: 1,
-            maxOutputTokens: 2048,
-            responseMimeType: "application/json"
-          },
-          safetySettings: [
-            {
-              category: "HARM_CATEGORY_HARASSMENT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE",
-            },
-            {
-              category: "HARM_CATEGORY_HATE_SPEECH",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE",
-            },
-            {
-              category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE",
-            },
-            {
-              category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE",
-            },
-          ],
-        }),
-      }
-    );
+    const client = new GoogleGenAI({ apiKey });
 
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
-    }
+    const interaction = await client.interactions.create({
+      model: "gemini-3.5-flash",
+      input: prompt,
+      response_format: [
+        {
+          type: "text",
+          mime_type: "application/json",
+          schema: {
+            type: "object",
+            properties: {
+              parts: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    price_estimate: { type: "integer" }
+                  },
+                  required: ["name", "type", "price_estimate"]
+                }
+              },
+              total_estimate: { type: "integer" },
+              reasoning: { type: "string" }
+            },
+            required: ["parts", "total_estimate", "reasoning"]
+          }
+        }
+      ]
+    });
 
-    const data = await response.json();
-    const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const content = interaction.output_text;
 
     if (!content) {
       throw new Error("No response from Gemini");
@@ -155,18 +138,18 @@ Use current market prices and popular, reliable components. Return only the JSON
     // Check if the AI went over budget and adjust if necessary
     if (buildData.total_estimate > budget) {
       console.warn(`AI exceeded budget: ${buildData.total_estimate} > ${budget}`);
-      
+
       // Calculate the overage and proportionally reduce all component prices
       const overage = buildData.total_estimate - budget;
       const reductionFactor = budget / buildData.total_estimate;
-      
+
       buildData.parts = buildData.parts.map((part: any) => ({
         ...part,
         price_estimate: Math.round(part.price_estimate * reductionFactor)
       }));
-      
+
       buildData.total_estimate = buildData.parts.reduce((sum: number, part: any) => sum + part.price_estimate, 0);
-      
+
       // Update reasoning to reflect the adjustment
       buildData.reasoning += ` Note: Component prices were adjusted to stay within your $${budget} budget.`;
     }
