@@ -20,7 +20,7 @@ export default function AboutPage() {
           <CardContent className="space-y-4">
             <p>
               GeniusRig is a smart tool that helps you build the perfect computer 
-              for your needs and budget. Using advanced AI technology powered by Google Gemini 2.0, 
+              for your needs and budget. Using advanced AI technology powered by Google Gemini 3.1 Pro, 
               we analyze your requirements and recommend compatible components that work together seamlessly.
             </p>
             <p>

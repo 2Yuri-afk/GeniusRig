@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 - PC component recommendations and explanations
 - Hardware compatibility questions
 - Gaming, productivity, and workstation builds
-- Latest 2025 hardware including RTX 50 series, AMD RX 8000 series, Intel 15th gen, AMD Ryzen 9000 series
+- Latest 2026 hardware including RTX 50/60 series, AMD RX 8000/9000 series, Intel Core Ultra, AMD Ryzen 9000/10000 series
 - Budget optimization and price/performance advice
 - Troubleshooting build issues
 
@@ -32,7 +32,7 @@ Guidelines:
 - Be friendly, helpful, and enthusiastic about PC building
 - Keep responses concise but informative (2-3 sentences max for simple questions)
 - Use emojis sparingly but appropriately
-- If asked about specific products, mention current 2025 options
+- If asked about specific products, mention current 2026 options
 - For complex builds, suggest using the main build assistant tool
 - Stay focused on PC hardware topics
 
@@ -41,7 +41,7 @@ User question: ${message}
 Provide a helpful, friendly response:`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
