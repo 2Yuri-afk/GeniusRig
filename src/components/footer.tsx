@@ -80,7 +80,7 @@ export function Footer() {
 
             {/* Tech Stack */}
             <div className="text-xs text-muted-foreground">
-              Powered by <span className="text-primary font-mono">Gemini 2.0 Flash</span> • 
+              Powered by <span className="text-primary font-mono">Gemini 3.5 Flash</span> • 
               Built with <span className="text-primary font-mono">Next.js</span>
             </div>
           </div>
