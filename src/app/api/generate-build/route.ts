@@ -67,7 +67,7 @@ Use current market prices and popular, reliable components. Return only the JSON
 
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -88,27 +88,7 @@ Use current market prices and popular, reliable components. Return only the JSON
             topK: 1,
             topP: 1,
             maxOutputTokens: 2048,
-            responseMimeType: "application/json",
-            responseSchema: {
-              type: "OBJECT",
-              properties: {
-                parts: {
-                  type: "ARRAY",
-                  items: {
-                    type: "OBJECT",
-                    properties: {
-                      name: { type: "STRING" },
-                      type: { type: "STRING" },
-                      price_estimate: { type: "INTEGER" }
-                    },
-                    required: ["name", "type", "price_estimate"]
-                  }
-                },
-                total_estimate: { type: "INTEGER" },
-                reasoning: { type: "STRING" }
-              },
-              required: ["parts", "total_estimate", "reasoning"]
-            }
+            responseMimeType: "application/json"
           },
           safetySettings: [
             {
