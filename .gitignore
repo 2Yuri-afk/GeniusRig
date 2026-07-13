@@ -25,6 +25,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Optional npm cache directory
+.npm
+
+# IDE and tests
+.agents/
+skills-lock.json
+test-output.css
+
 # local env files
 .env*.local
 
